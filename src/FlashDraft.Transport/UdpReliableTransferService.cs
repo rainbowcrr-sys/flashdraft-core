@@ -4,6 +4,7 @@ using System.Security.Cryptography;
 using System.Text.Json;
 using FlashDraft.Core;
 using FlashDraft.Crypto;
+using Microsoft.Win32.SafeHandles;
 
 namespace FlashDraft.Transport;
 
