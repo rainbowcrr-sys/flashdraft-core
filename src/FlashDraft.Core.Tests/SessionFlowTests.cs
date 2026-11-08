@@ -123,7 +123,7 @@ public class SessionFlowTests
             using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(25));
             Task receive = a.ReceiveAsync(offerA, sidA, keysA, dst, progress, false, cts.Token);
             await Task.Delay(150, cts.Token);
-            Task send = b.SendAsync(offerB, sidB, keysB,
+            Task send = b.SendAsync(offerA, sidB, keysB,
                 new[] { descriptor }, new[] { sourcePath }, progress, false, cts.Token);
             await Task.WhenAll(receive, send).WaitAsync(TimeSpan.FromSeconds(30));
             progress.Complete();
@@ -159,10 +159,10 @@ public class SessionFlowTests
             DateTimeOffset now = DateTimeOffset.UtcNow;
             var offerA = new SessionOffer(Guid.NewGuid(), a.LocalPublicKey,
                 now.AddMinutes(5), RandomNumberGenerator.GetBytes(ProtocolConstants.TokenSize),
-                Array.Empty<string>(), null);
+                Array.Empty<string>(), "127.0.0.1:" + portA);
             var offerB = new SessionOffer(Guid.NewGuid(), b.LocalPublicKey,
                 now.AddMinutes(5), RandomNumberGenerator.GetBytes(ProtocolConstants.TokenSize),
-                Array.Empty<string>(), "127.0.0.1:" + portA);
+                Array.Empty<string>(), null);
 
             var (keysA, sidA) = a.Bind(offerA, offerB);
             var (keysB, sidB) = b.Bind(offerB, offerA);
@@ -170,7 +170,7 @@ public class SessionFlowTests
             using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(25));
             Task receive = a.ReceiveAsync(offerA, sidA, keysA, dst, progress, true, cts.Token);
             await Task.Delay(120, cts.Token);
-            Task send = b.SendAsync(offerB, sidB, keysB,
+            Task send = b.SendAsync(offerA, sidB, keysB,
                 new[] { descriptor }, new[] { sourcePath }, progress, true, cts.Token);
             await Task.WhenAll(receive, send).WaitAsync(TimeSpan.FromSeconds(30));
             progress.Complete();

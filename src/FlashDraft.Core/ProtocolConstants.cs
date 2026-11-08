@@ -55,8 +55,8 @@ public static class ProtocolConstants
     /// <summary>Adjustable: UDP port used for WAN hole punching and data.</summary>
     public const int WanDataPort = 45792;
 
-    /// <summary>Adjustable: WAN chunks stay below the 65507-byte UDP datagram limit.</summary>
-    public const int WanChunkSize = 32 * 1024;
+    /// <summary>Adjustable: WAN chunks stay below the typical path MTU to avoid IP fragmentation.</summary>
+    public const int WanChunkSize = 1000;
 
     public const int UdpAckTimeoutMs = 600;
     public const int UdpMaxRetries = 6;
