@@ -120,11 +120,12 @@ public class SessionFlowTests
             var (keysA, sidA) = a.Bind(offerA, offerB);
             var (keysB, sidB) = b.Bind(offerB, offerA);
 
-            Task receive = a.ReceiveAsync(offerA, sidA, keysA, dst, progress, false, CancellationToken.None);
-            await Task.Delay(150);
+            using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(25));
+            Task receive = a.ReceiveAsync(offerA, sidA, keysA, dst, progress, false, cts.Token);
+            await Task.Delay(150, cts.Token);
             Task send = b.SendAsync(offerB, sidB, keysB,
-                new[] { descriptor }, new[] { sourcePath }, progress, false, CancellationToken.None);
-            await Task.WhenAll(receive, send);
+                new[] { descriptor }, new[] { sourcePath }, progress, false, cts.Token);
+            await Task.WhenAll(receive, send).WaitAsync(TimeSpan.FromSeconds(30));
             progress.Complete();
 
             Assert.Equal(content, File.ReadAllBytes(Path.Combine(dst, "sample.bin")));
@@ -166,11 +167,12 @@ public class SessionFlowTests
             var (keysA, sidA) = a.Bind(offerA, offerB);
             var (keysB, sidB) = b.Bind(offerB, offerA);
 
-            Task receive = a.ReceiveAsync(offerA, sidA, keysA, dst, progress, true, CancellationToken.None);
-            await Task.Delay(120);
+            using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(25));
+            Task receive = a.ReceiveAsync(offerA, sidA, keysA, dst, progress, true, cts.Token);
+            await Task.Delay(120, cts.Token);
             Task send = b.SendAsync(offerB, sidB, keysB,
-                new[] { descriptor }, new[] { sourcePath }, progress, true, CancellationToken.None);
-            await Task.WhenAll(receive, send);
+                new[] { descriptor }, new[] { sourcePath }, progress, true, cts.Token);
+            await Task.WhenAll(receive, send).WaitAsync(TimeSpan.FromSeconds(30));
             progress.Complete();
 
             Assert.Equal(content, File.ReadAllBytes(Path.Combine(dst, "wan.bin")));
