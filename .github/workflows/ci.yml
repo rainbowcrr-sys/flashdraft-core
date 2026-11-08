@@ -22,4 +22,14 @@ jobs:
       - name: Build
         run: dotnet build FlashDraft.sln -c Release --no-restore
       - name: Test
-        run: dotnet test FlashDraft.sln -c Release --no-build --logger "console;verbosity=normal"
+        shell: bash
+        run: |
+          set +e
+          set +o pipefail
+          dotnet test FlashDraft.sln -c Release --no-build --logger "console;verbosity=normal" > test.log 2>&1
+          status=$?
+          cat test.log
+          if [ "$status" -ne 0 ]; then
+            grep -iE "failed|error|timeout|exception|assert" test.log | tail -35 | while IFS= read -r line; do echo "::error::$line"; done
+            exit "$status"
+          fi
