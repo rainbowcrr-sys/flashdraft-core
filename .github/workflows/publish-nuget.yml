@@ -1,0 +1,24 @@
+name: publish-nuget
+
+on:
+  push:
+    tags:
+      - 'v0.*'
+
+jobs:
+  pack-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - name: Verify tag matches version
+        run: echo "Releasing ${GITHUB_REF_NAME}; version is centralized in Directory.Build.props"
+      - name: Pack
+        run: dotnet pack src/FlashDraft.Core/FlashDraft.Core.csproj -c Release -o ./artifacts
+      # NUGET_API_KEY is stored in repository Secrets and is only reachable on tag builds.
+      - name: Push
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        run: dotnet nuget push "./artifacts/*.nupkg" --api-key "$NUGET_API_KEY" --source https://api.nuget.org/v3/index.json --skip-duplicate

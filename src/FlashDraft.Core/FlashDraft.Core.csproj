@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <PackageId>FlashDraft.Core</PackageId>
+    <Description>Protocol models, frame format and connection codes for FlashDraft.</Description>
+    <IsPackable>true</IsPackable>
+  </PropertyGroup>
+</Project>

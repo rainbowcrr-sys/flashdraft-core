@@ -1,0 +1,16 @@
+<Project>
+  <PropertyGroup>
+    <!-- Adjustable: set this to the newest stable .NET TFM when a newer release is available. -->
+    <FlashDraftTfm>net10.0</FlashDraftTfm>
+    <TargetFramework>$(FlashDraftTfm)</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <!-- Adjustable: enable warnings-as-errors once the scaffold is fully documented. -->
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <NoWarn>$(NoWarn);1591;8019</NoWarn>
+    <Version>0.1.0</Version>
+    <Authors>FlashDraft contributors</Authors>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+  </PropertyGroup>
+</Project>

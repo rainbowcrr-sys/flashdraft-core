@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FlashDraft.Core\FlashDraft.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- Managed X25519 implementation; no native dependency, works on all target platforms. -->
+    <PackageReference Include="BouncyCastle.Cryptography" Version="2.4.0" />
+  </ItemGroup>
+</Project>

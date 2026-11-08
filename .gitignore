@@ -1,0 +1,17 @@
+github_credentials.txt
+*.pat
+*.token
+*.secret
+*.pfx
+*.snk
+bin/
+obj/
+artifacts/
+*.user
+*.suo
+.vs/
+.vscode/
+.idea/
+*.nupkg
+*.log
+TestResults/
