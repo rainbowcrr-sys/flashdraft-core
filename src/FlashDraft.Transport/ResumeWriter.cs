@@ -73,8 +73,8 @@ public sealed class ResumeWriter : IDisposable
                 {
                     if (bitmap.IsSet(i))
                     {
-                        long offset = (long)i * ProtocolConstants.ChunkSize;
-                        bytesReceived += Math.Min(ProtocolConstants.ChunkSize, file.Length - offset);
+                        long offset = (long)i * file.ChunkSize;
+                        bytesReceived += Math.Min(file.ChunkSize, file.Length - offset);
                     }
                 }
             }
@@ -92,7 +92,7 @@ public sealed class ResumeWriter : IDisposable
             return;
         }
 
-        long offset = (long)chunkIndex * ProtocolConstants.ChunkSize;
+        long offset = (long)chunkIndex * _file.ChunkSize;
         RandomAccess.Write(_handle, plaintext, offset);
         _bitmap.Set(chunkIndex);
         _bytesReceived += plaintext.Length;

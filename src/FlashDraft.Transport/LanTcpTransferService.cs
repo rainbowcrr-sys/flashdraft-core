@@ -74,8 +74,8 @@ public sealed class LanTcpTransferService : ITransferService
                 options,
                 async (chunkIndex, ct) =>
                 {
-                    long offset = (long)chunkIndex * ProtocolConstants.ChunkSize;
-                    int length = (int)Math.Min(ProtocolConstants.ChunkSize, file.Length - offset);
+                    long offset = (long)chunkIndex * file.ChunkSize;
+                    int length = (int)Math.Min(file.ChunkSize, file.Length - offset);
                     byte[] plain = new byte[length];
                     RandomAccess.Read(handle, plain, offset);
 
