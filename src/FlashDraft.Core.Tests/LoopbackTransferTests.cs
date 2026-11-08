@@ -63,7 +63,7 @@ public class LoopbackTransferTests
 
             Task receiveTask = receiver.ReceiveAsync(
                 session, destinationDirectory, progress, CancellationToken.None);
-            await Task.Delay(100).ConfigureAwait(false);
+            await Task.Delay(100);
             Task sendTask = sender.SendAsync(
                 session,
                 new[] { descriptor },
@@ -72,7 +72,7 @@ public class LoopbackTransferTests
                 progress,
                 CancellationToken.None);
 
-            await Task.WhenAll(sendTask, receiveTask).ConfigureAwait(false);
+            await Task.WhenAll(sendTask, receiveTask);
             progress.Complete();
 
             string destinationPath = Path.Combine(destinationDirectory, "sample.bin");

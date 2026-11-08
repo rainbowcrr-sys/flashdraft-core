@@ -124,8 +124,12 @@ public sealed class ResumeWriter : IDisposable
         }
 
         _handle.Dispose();
-        using FileStream stream = File.OpenRead(_partPath);
-        byte[] digest = SHA256.HashData(stream);
+        byte[] digest;
+        using (FileStream stream = File.OpenRead(_partPath))
+        {
+            digest = SHA256.HashData(stream);
+        }
+
         if (!digest.AsSpan().SequenceEqual(_file.Sha256))
         {
             return false;
