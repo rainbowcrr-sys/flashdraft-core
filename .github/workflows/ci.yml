@@ -9,7 +9,33 @@ on:
   workflow_dispatch:
 
 jobs:
+  precheck:
+    runs-on: ubuntu-latest
+    outputs:
+      skip: ${{ steps.check.outputs.skip }}
+    steps:
+      - id: check
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        shell: bash
+        run: |
+          if [[ "${{ github.event_name }}" != "schedule" ]]; then
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          SHA="${{ github.sha }}"
+          PREV="$(gh run list --workflow=core-ci --event=schedule --status=success --limit 1 --json headSha --jq '.[0].headSha' 2>/dev/null || true)"
+          if [[ "$PREV" == "$SHA" ]]; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "::notice::Nightly tests already passed for $SHA; skipping."
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
   build-and-test:
+    needs: precheck
+    if: needs.precheck.outputs.skip != 'true'
     strategy:
       fail-fast: false
       matrix:
