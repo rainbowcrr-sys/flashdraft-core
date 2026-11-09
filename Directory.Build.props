@@ -9,7 +9,7 @@
     <!-- Adjustable: enable warnings-as-errors once the scaffold is fully documented. -->
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <NoWarn>$(NoWarn);1591;8019</NoWarn>
-    <Version>0.1.0</Version>
+    <Version>0.1.2</Version>
     <Authors>FlashDraft contributors</Authors>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
   </PropertyGroup>
